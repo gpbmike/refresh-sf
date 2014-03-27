@@ -1,0 +1,116 @@
+<!doctype>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Refresh-SF - Online JavaScript and CSS Compressor</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- build:css css/vendor.css -->
+  <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.min.css">
+  <!-- endbuild -->
+  <!-- build:css css/app.css -->
+  <link rel="stylesheet" href="css/app.css">
+  <!-- endbuild -->
+</head>
+<body>
+
+<script type="text/x-handlebars">
+  <div class="container">
+    <div class="page-header">
+      <h1>Online JavaScript/CSS Compressor</h1>
+      <p class="lead">This is a web interface to compress your JavaScript or CSS. This tool uses <a href="https://github.com/mishoo/UglifyJS2">UglifyJS 2</a> and <a href="https://github.com/GoalSmashers/clean-css">Clean-CSS.</a></p>
+    </div>
+  </div>
+
+  {{outlet}}
+
+  <div class="container" style="text-align: center">
+    <hr>
+    <p>Built by <a href="http://twitter.com/gpbmike">@gpbmike</a> with <a href="http://emberjs.com">Ember</a>, <a href="http://getbootstrap.com/">Bootstrap</a>, and <a href="http://gulpjs.com/">gulp.js</a>.</p>
+  </div>
+
+</script>
+
+<script type="text/x-handlebars" data-template-name="compressor">
+
+  <div class="container">
+
+    {{#unless output}}
+      <div class="row">
+        <div class="col-lg-12">
+          <div class="form-group">
+            <h2>Input Code</h2>
+            {{view App.DragAndDrop value=input class="form-control input" rows="10" placeholder=placeholder disabled=isCompressing}}
+          </div>
+        </div>
+      </div>
+
+      {{#if input}}
+        <div class="col-lg-12">
+          <div class="row"><button type="button" class="btn btn-primary" {{action "compress"}} {{bind-attr disabled=isCompressing}}>Compress</button></div>
+        </div>
+      {{/if}}
+
+    {{else}}
+
+      <div class="row">
+        <div class="col-lg-12">
+          <h2>Compressed {{displayLanguage}}</h2>
+          {{textarea value=output classBinding=":form-control :alert error:alert-danger:alert-success" rows=10}}
+        </div>
+      </div>
+
+      <div class="row">
+
+        <div class="col-lg-4">
+          {{#unless error}}
+            <div class="input-group">
+              {{input class="form-control" value=filename}}
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-primary" {{action "save"}} {{bind-attr disabled=saveDisabled}}>Save As</button>
+              </span>
+            </div>
+          {{/unless}}
+        </div>
+
+        <div class="col-lg-8">
+          <button type="button" class="btn btn-default pull-right" {{action "clearOutput"}}>Reset</button>
+        </div>
+
+      </div>
+
+    {{/unless}}
+
+    {{!-- Hidden form used to POST to gzip url for download --}}
+    <form {{bind-attr action=gzipUrl}} method="post">
+      {{input name="code" value=output type="hidden"}}
+    </form>
+
+  </div>
+
+</script>
+
+<!-- build:js scripts/vendor.js -->
+<script src="../bower_components/jquery/jquery.js"></script>
+<script src="../bower_components/handlebars/handlebars.js"></script>
+
+<!-- @if dist=false -->
+<script src="../bower_components/ember/ember.js"></script>
+<!-- @endif --><!-- @if dist=true -->
+<script src="../bower_components/ember/ember.prod.js"></script>
+<!-- @endif -->
+
+<script src="../bower_components/filereader.js/filereader.js"></script>
+<script src="../bower_components/FileSaver.js/FileSaver.js"></script>
+<!-- endbuild -->
+
+<!-- build:js scripts/app.js -->
+<script src="../config/environment.js"></script>
+<!-- @if dist=false -->
+<script src="../config/environments/development.js"></script>
+<!-- @endif --><!-- @if dist=true -->
+<script src="../config/environments/production.js"></script>
+<!-- @endif -->
+<script src="scripts/app.js"></script>
+<!-- endbuild -->
+
+</body>
