@@ -28,3 +28,6 @@ build:
   - 'cssmin'
   - 'usemin'
   - 'htmlmin'
+
+deploy:
+  - 'gh-pages'
