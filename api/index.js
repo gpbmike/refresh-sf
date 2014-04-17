@@ -4,12 +4,11 @@ var compress     = require('compression')();
 var bodyParser   = require('body-parser');
 var UglifyJS     = require('uglify-js');
 var CleanCSS     = require('clean-css');
-var hljs         = require('highlight.js');
 var errorhandler = require('errorhandler');
 var api          = express();
 
 api.use(morgan('dev'));
-// api.use(compress);
+api.use(compress);
 api.use(bodyParser({ limit: '1mb' }));
 api.use(errorhandler());
 
@@ -33,46 +32,44 @@ api.all('*', function(req, res, next){
   next();
 });
 
-
-api.post('/', function(req, res){
+api.post('/javascript/', function (req, res) {
 
   if (!req.param('code')) {
     res.send(404, ':(');
   }
 
-  var highlighted = hljs.highlightAuto(req.param('code'), ['javascript', 'css']);
-  var output = { language: highlighted.language };
-
-  switch (output.language) {
-  case 'javascript':
-    try {
-      var minified = UglifyJS.minify(req.param('code'), {
-        fromString: true,
-        warnings: true,
-        compress: {
-          warnings: true
-        }
-      });
-      output.code = minified.code;
-      output.map = minified.map;
-    } catch (error) {
-      delete error.stack;
-      res.json(500, error);
-    }
-    res.send(output);
-    break;
-
-  case 'css':
-    output.code = new CleanCSS().minify(req.param('code'));
-    res.send(output);
-    break;
-
-  default:
-    res.json(500, 'Sorry, we could not figure out what language you are trying to compress.');
+  try {
+    output = UglifyJS.minify(req.param('code'), {
+      fromString: true,
+      warnings: true,
+      compress: {
+        warnings: true
+      }
+    });
+  } catch (error) {
+    // users don't need to see filestructure of server
+    delete error.stack;
+    res.json(500, error);
   }
+  res.send(output);
+
 });
 
-api.post('/:fileName', function (req, res) {
+api.post('/css/', function (req, res) {
+
+  if (!req.param('code')) {
+    res.send(404, ':(');
+  }
+
+  var output = {
+    code: new CleanCSS().minify(req.param('code'))
+  };
+
+  res.send(output);
+
+});
+
+api.post('/gz/:fileName', function (req, res) {
   compress(req, res, function (error) {
     if (error) {
       res.json(error);
@@ -87,4 +84,6 @@ api.all('*', function (req, res) {
   res.send(404);
 });
 
-api.listen(3001);
+api.listen(3000, function() {
+  console.log('Server listening on port 3000');
+});

@@ -1,7 +1,15 @@
 (function () {
+
   'use strict';
 
+  Ember.throttledObserver = function(func, key, time) {
+    return Em.observer(function() {
+        Em.run.throttle(this, func, time);
+    }, key);
+  };
+
   var App = Ember.Application.create({
+    rootElement             : '#compressor',
     LOG_ACTIVE_GENERATION   : true,
     LOG_MODULE_RESOLVER     : true,
     LOG_TRANSITIONS         : true,
@@ -17,17 +25,32 @@
 
   App.CompressorController = Ember.Controller.extend({
 
-    placeholder: 'To get started, paste your JavaScript or CSS code here, or drag in files from your desktop.',
+    placeholder: 'Paste your JavaScript or CSS code here, or drag in files from your desktop.',
 
     apiUrl: window.ENV.apiUrl,
 
+    language: null,
+    languages: ['javascript', 'css'],
+
     gzipUrl: function () {
-      return this.get('apiUrl') + this.get('filename');
+      return this.get('apiUrl') + 'gz/' + this.get('filename');
     }.property('apiUrl', 'filename'),
 
     saveDisabled: function () {
       return !this.get('filename');
     }.property('filename'),
+
+    compressDisabled: function () {
+      return !this.get('input') || !this.get('language') || this.get('isCompressing');
+    }.property('input', 'language', 'isCompressing'),
+
+    checkLanguage: Ember.throttledObserver(function () {
+
+      var highlighted = hljs.highlightAuto(this.get('input'), this.get('languages'));
+
+      this.set('language', highlighted.language);
+
+    }, 'input', 500),
 
     displayLanguage: function () {
 
@@ -44,25 +67,22 @@
 
     compress: function () {
       this.set('output', null);
-      this.set('language', null);
       this.set('error', null);
 
       this.set('isCompressing', true);
 
       return new Ember.RSVP.Promise(function(resolve, reject) {
         Ember.$.ajax({
-          url: this.get('apiUrl'),
+          url: this.get('apiUrl') + this.get('language') + '/',
           type: 'post',
           data: { code: this.get('input') },
           dataType: 'json'
         }).done(function (data) {
-          this.set('language', data.language);
           this.set('output', data.code);
           Ember.run(null, resolve);
         }.bind(this)).fail(function (jqXHR) {
           this.set('error', true);
-          this.set('output', JSON.stringify(jqXHR.responseJSON, null, 2));
-          Ember.run(null, reject);
+          Ember.run(null, reject, JSON.stringify(jqXHR.responseJSON, null, 2));
         }.bind(this)).always(function () {
           this.set('isCompressing', false);
         }.bind(this));
@@ -73,16 +93,19 @@
       compress: function () {
         this.compress().then(function () {
 
-          var filename;
-
-          if (this.get('language') === 'css') {
-            filename = 'style.min.css';
-          } else {
-            filename = 'app.min.js';
+          if (this.get('filename')) {
+            return;
           }
 
-          this.set('filename', filename);
+          if (this.get('language') === 'css') {
+            this.set('filename', 'style.min.css');
+          } else {
+            this.set('filename', 'app.min.js');
+          }
 
+        }.bind(this), function (error) {
+          this.set('error', true);
+          this.set('output', error);
         }.bind(this));
       },
       save: function () {
@@ -94,7 +117,6 @@
       },
       clearOutput: function () {
         this.set('output', null);
-        this.set('language', null);
       }
     }
 
@@ -107,8 +129,13 @@
         accept: 'text/*',
         dragClass: 'dragging',
         on: {
-          load: function (event) {
+          load: function (event, file) {
             this.set('value', this.getWithDefault('value', '') + event.target.result);
+
+            var filename = file.name.split('.');
+            filename.splice(-1, 0, 'min');
+
+            this.set('parentView.controller.filename', filename.join('.'));
           }.bind(this),
         }
       });

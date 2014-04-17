@@ -1,0 +1,30 @@
+default:
+  - 'serve'
+
+dev:
+  - 'jshint'
+  - 'clean:dev'
+  - 'sass:dev'
+  - 'preprocess:dev'
+  - 'copy:dev'
+  - 'emberTemplates:dev'
+
+serve:
+  - 'dev'
+  - 'express'
+  - 'connect:dev'
+  - 'watch'
+
+build:
+  - 'jshint'
+  - 'clean:dist'
+  - 'preprocess:dist'
+  - 'sass:dist'
+  - 'copy:dist'
+  - 'emberTemplates:dist'
+  - 'useminPrepare'
+  - 'concat'
+  - 'uglify'
+  - 'cssmin'
+  - 'usemin'
+  - 'htmlmin'
