@@ -4,6 +4,7 @@
   "description": "Minify, obfuscate, concatenate, and gzip JavaScript and CSS.",
   "main": "index.js",
   "scripts": {
+    "start": "api/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
