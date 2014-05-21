@@ -38,7 +38,7 @@
 
   <div class="row">
     <div class="col-lg-12">
-      <pre {{ bind-attr classBinding=":form-control :alert error:alert-danger:alert-success" }}>{{output}}</pre>
+      {{view App.OutputTextArea classBinding=":form-control :alert error:alert-danger:alert-success" rows="10" value=output}}
     </div>
   </div>
 
