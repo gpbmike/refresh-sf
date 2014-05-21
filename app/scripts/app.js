@@ -117,6 +117,20 @@
       },
       clearOutput: function () {
         this.set('output', null);
+      },
+      createGist: function () {
+
+        var controller = this;
+
+        $.ajax({
+          url: 'https://api.github.com/gists',
+          type: 'POST',
+          dataType: 'json',
+          data: JSON.stringify({ files: { min: { content: this.get('output') } } })
+        }).done(function (response) {
+          controller.set('gistUrl', response.files.min.raw_url);
+        });
+
       }
     }
 
