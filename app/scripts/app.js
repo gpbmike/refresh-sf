@@ -122,13 +122,17 @@
 
         var controller = this;
 
+        var data = { files: {} };
+
+        data.files[this.get('filename')] = { content: this.get('output') };
+
         $.ajax({
           url: 'https://api.github.com/gists',
           type: 'POST',
           dataType: 'json',
-          data: JSON.stringify({ files: { min: { content: this.get('output') } } })
+          data: JSON.stringify(data)
         }).done(function (response) {
-          controller.set('gistUrl', response.files.min.raw_url);
+          controller.set('gistUrl', response.files[controller.get('filename')].raw_url);
         });
 
       }

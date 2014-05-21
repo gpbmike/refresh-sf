@@ -5,3 +5,4 @@ dev/
 .tmp/
 tmp/
 .sass-cache/
+.grunt/
