@@ -62,7 +62,7 @@ api.post('/css/', function (req, res) {
   }
 
   var output = {
-    code: new CleanCSS().minify(req.param('code'))
+    code: new CleanCSS({ processImport : false }).minify(req.param('code'))
   };
 
   res.send(output);
