@@ -1,14 +1,15 @@
 var express      = require('express');
 var morgan       = require('morgan');
-var compress     = require('compression')();
+var compression  = require('compression');
 var bodyParser   = require('body-parser');
 var UglifyJS     = require('uglify-js');
 var CleanCSS     = require('clean-css');
 var errorhandler = require('errorhandler');
+var zlib         = require('zlib');
 var api          = express();
 
 api.use(morgan('dev'));
-api.use(compress);
+api.use(compression());
 api.use(bodyParser({ limit: '1mb' }));
 api.use(errorhandler());
 
@@ -70,13 +71,8 @@ api.post('/css/', function (req, res) {
 });
 
 api.post('/gz/:fileName', function (req, res) {
-  compress(req, res, function (error) {
-    if (error) {
-      res.json(error);
-    }
-
-    res.attachment(req.param('fileName'));
-    res.end(req.param('code'), 'utf8');
+  zlib.gzip(req.param('code'), function (_, result) {
+    res.end(result);
   });
 });
 
