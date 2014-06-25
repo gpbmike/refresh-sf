@@ -14,13 +14,13 @@
     "tests"
   ],
   "dependencies": {
-    "ember": "~1.4.0",
+    "ember": "~1.5.1",
     "bootstrap": "~3.1.1",
     "filereader.js": "bgrins/filereader.js",
     "zeroclipboard": "~1.3.5",
     "FileSaver.js": "eligrey/FileSaver.js",
     "handlebars": "~1.3.0",
-    "jshint": "~2.5.0",
+    "jshint": "~2.5.1",
     "uglify-js": "mishoo/UglifyJS2",
     "clean-css": "GoalSmashers/clean-css",
     "requirejs": "~2.1.11"

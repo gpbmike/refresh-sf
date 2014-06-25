@@ -20,6 +20,10 @@ module.exports = {
   },
   express: {
     files: './api/**',
-    tasks: ['express']
+    tasks: ['express'],
+    options: {
+      nospawn: true,
+      atBegin: true
+    }
   }
 };

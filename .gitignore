@@ -6,3 +6,4 @@ dev/
 tmp/
 .sass-cache/
 .grunt/
+.DS_store
