@@ -146,10 +146,12 @@
       this.$().fileReaderJS({
         accept: 'text/*',
         dragClass: 'dragging',
+        readAsDefault: 'Text',
         on: {
           load: function (event, file) {
             this.set('value', this.getWithDefault('value', '') + event.target.result);
 
+            // add 'min' to the filename
             var filename = file.name.split('.');
             filename.splice(-1, 0, 'min');
 
@@ -160,6 +162,7 @@
     }
   });
 
+  // Highlight the output textarea
   App.OutputTextArea = Ember.TextArea.extend({
     didInsertElement: function () {
       this.$().focus().select();
