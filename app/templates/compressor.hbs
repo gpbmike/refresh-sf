@@ -1,13 +1,22 @@
 {{#unless output}}
 
   <div class="row">
-    <div class="col-lg-12">
-      <h2>
+    <div class="col-lg-6"><h2>Input</h2></div>
+    <div class="col-lg-6 text-right compressed-actions">
         {{#unless compressDisabled}}
-          <button type="button" class="btn btn-primary pull-right" {{ action "compress" }} {{ bind-attr disabled=compressDisabled }}><span class="glyphicon glyphicon-resize-small"></span> Compress {{displayLanguage}}</button>
+          <button type="button" class="btn btn-primary pull-right" {{ action "compress" }}><span class="glyphicon glyphicon-resize-small"></span> Compress {{displayLanguage}}</button>
         {{/unless}}
-        Input Code
-      </h2>
+        {{#if unknownLanguage}}
+          <div class="btn-group">
+            <button type="button" class="btn btn-primary" {{ action "compressJS" }}><span class="glyphicon glyphicon-resize-small"></span> Compress JS</button>
+            <button type="button" class="btn btn-primary" {{ action "compressCSS" }}><span class="glyphicon glyphicon-resize-small"></span> Compress CSS</button>
+          </div>
+        {{/if}}
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-12">
       <div class="form-group">
         {{view App.DragAndDrop value=input class="form-control input" rows="10" placeholder=placeholder disabled=isCompressing}}
       </div>

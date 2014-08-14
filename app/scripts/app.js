@@ -56,6 +56,8 @@
 
     checkLanguage: Ember.throttledObserver(function () {
 
+      this.set('unknownLanguage', null);
+
       if (Ember.isEmpty(this.get('input'))) {
         return;
       }
@@ -65,6 +67,10 @@
       var highlighted = hljs.highlightAuto(input, this.get('languages'));
 
       this.set('language', highlighted.language);
+
+      if (!this.get('language')) {
+        this.set('unknownLanguage', true);
+      }
 
     }, 'input', 500),
 
@@ -81,13 +87,13 @@
 
     }.property('language'),
 
-    compress: function () {
+    compress: function (language) {
       this.set('output', null);
       this.set('error', null);
 
       this.set('isCompressing', true);
 
-      var url = this.get('apiUrl') + (this.get('useYui') ? 'yui' : this.get('language')) + '/';
+      var url = this.get('apiUrl') + (this.get('useYui') ? 'yui' : language) + '/';
 
       return new Ember.RSVP.Promise(function(resolve, reject) {
         Ember.$.ajax({
@@ -114,8 +120,8 @@
     },
 
     actions: {
-      compress: function () {
-        this.compress().then(function (code) {
+      compress: function (language) {
+        this.compress(language || this.get('language')).then(function (code) {
 
           this.set('output', code);
 
@@ -134,17 +140,29 @@
           this.set('output', error);
         }.bind(this));
       },
+
+      compressJS: function () {
+        this.send('compress', 'javascript');
+      },
+
+      compressCSS: function () {
+        this.send('compress', 'css');
+      },
+
       save: function () {
         var blob = new Blob([this.get('output')], {type: 'text/' + this.get('language') + ';charset=utf-8'});
         saveAs(blob, this.get('filename'));
       },
+
       saveGzip: function () {
         Ember.$('form').trigger('submit');
       },
+
       resetCompressor: function () {
         this.set('input', null);
         this.set('output', null);
       },
+
       createGist: function () {
 
         var controller = this;
