@@ -1,10 +1,6 @@
 module.exports = {
-  'gh-pages': {
-    options: {
-      base: 'dist'
-    },
-    deploy: {
-      src: '[**/*]'
-    }
-  }
+  options: {
+    base: 'dist'
+  },
+  src: '**/*'
 };
