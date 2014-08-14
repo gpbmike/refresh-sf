@@ -11,6 +11,12 @@
       <div class="form-group">
         {{view App.DragAndDrop value=input class="form-control input" rows="10" placeholder=placeholder disabled=isCompressing}}
       </div>
+      <div class="form-group checkbox">
+        <label>
+          {{input type="checkbox" checked=useYui}}
+          Use YUI Compressor instead of UglifyJS/Clean-CSS.
+        </label>
+      </div>
     </div>
   </div>
 
@@ -22,14 +28,14 @@
     </div>
     <div class="col-lg-6 text-right compressed-actions">
       {{#if error}}
-        <button type="button" class="btn btn-default" {{action "clearOutput"}}><span class="glyphicon glyphicon-refresh"></span> Reset</button>
+        <button type="button" class="btn btn-default" {{action "resetCompressor"}}><span class="glyphicon glyphicon-refresh"></span> Reset</button>
       {{else}}
         <div class="input-group">
           {{input class="form-control" value=filename}}
           <span class="input-group-btn">
             <button type="button" class="btn btn-primary" {{action "save"}} {{bind-attr disabled=saveDisabled}}><span class="glyphicon glyphicon-save"></span> Save</button>
             <button type="button" class="btn btn-primary" {{action "saveGzip"}}><span class="glyphicon glyphicon-resize-small"></span> gzip</button>
-            <button type="button" class="btn btn-default" {{action "clearOutput"}}><span class="glyphicon glyphicon-refresh"></span> Reset</button>
+            <button type="button" class="btn btn-default" {{action "resetCompressor"}}><span class="glyphicon glyphicon-refresh"></span> Reset</button>
           </span>
         </div>
       {{/if}}

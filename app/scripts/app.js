@@ -32,6 +32,16 @@
     language: null,
     languages: ['javascript', 'css'],
 
+    useYui: localStorage.getItem('useYui'),
+
+    rememberYui: function () {
+      if (this.get('useYui')) {
+        localStorage.setItem('useYui', true);
+      } else {
+        localStorage.removeItem('useYui');
+      }
+    }.observes('useYui'),
+
     gzipUrl: function () {
       return this.get('apiUrl') + 'gz/' + this.get('filename');
     }.property('apiUrl', 'filename'),
@@ -46,7 +56,13 @@
 
     checkLanguage: Ember.throttledObserver(function () {
 
-      var highlighted = hljs.highlightAuto(this.get('input'), this.get('languages'));
+      if (Ember.isEmpty(this.get('input'))) {
+        return;
+      }
+
+      var input = this.get('input').replace();
+
+      var highlighted = hljs.highlightAuto(input, this.get('languages'));
 
       this.set('language', highlighted.language);
 
@@ -71,18 +87,26 @@
 
       this.set('isCompressing', true);
 
+      var url = this.get('apiUrl') + (this.get('useYui') ? 'yui' : this.get('language')) + '/';
+
       return new Ember.RSVP.Promise(function(resolve, reject) {
         Ember.$.ajax({
-          url: this.get('apiUrl') + this.get('language') + '/',
+          url : url,
           type: 'post',
-          data: { code: this.get('input') },
+          data: {
+            code: this.get('input'),
+            type: this.get('language')
+          },
           dataType: 'json'
         }).done(function (data) {
-          this.set('output', data.code);
-          Ember.run(null, resolve);
+          resolve(data.code);
         }.bind(this)).fail(function (jqXHR) {
           this.set('error', true);
-          Ember.run(null, reject, JSON.stringify(jqXHR.responseJSON, null, 2));
+          if (jqXHR.responseJSON.yuiError) {
+            reject(jqXHR.responseJSON.yuiError);
+          } else {
+            reject(JSON.stringify(jqXHR.responseJSON, null, 2));
+          }
         }.bind(this)).always(function () {
           this.set('isCompressing', false);
         }.bind(this));
@@ -91,7 +115,9 @@
 
     actions: {
       compress: function () {
-        this.compress().then(function () {
+        this.compress().then(function (code) {
+
+          this.set('output', code);
 
           if (this.get('filename')) {
             return;
@@ -115,7 +141,8 @@
       saveGzip: function () {
         Ember.$('form').trigger('submit');
       },
-      clearOutput: function () {
+      resetCompressor: function () {
+        this.set('input', null);
         this.set('output', null);
       },
       createGist: function () {
@@ -159,13 +186,17 @@
           }.bind(this),
         }
       });
+
+      this.$().focus().select();
     }
   });
 
   // Highlight the output textarea
   App.OutputTextArea = Ember.TextArea.extend({
     didInsertElement: function () {
-      this.$().focus().select();
+      if (!this.get('parentView.controller.error')) {
+        this.$().focus().select();
+      }
     }
   });
 

@@ -4,6 +4,7 @@ var compression  = require('compression');
 var bodyParser   = require('body-parser');
 var UglifyJS     = require('uglify-js');
 var CleanCSS     = require('clean-css');
+var YUI          = require('yuicompressor');
 var errorhandler = require('errorhandler');
 var zlib         = require('zlib');
 var api          = express();
@@ -67,6 +68,27 @@ api.post('/css/', function (req, res) {
   };
 
   res.send(output);
+
+});
+
+api.post('/yui/', function (req, res) {
+
+  if (!req.param('code')) {
+    res.send(404, ':(');
+  }
+
+  YUI.compress(req.param('code'), {
+    type: req.param('type') === 'javascript' ? 'js' : 'css'
+  }, function(err, data, extra) {
+    //err   If compressor encounters an error, it's stderr will be here
+    //data  The compressed string, you write it out where you want it
+    //extra The stderr (warnings are printed here in case you want to echo them
+    if (err) {
+      res.send(500, { yuiError: err });
+    } else {
+      res.send({ code: data });
+    }
+  });
 
 });
 
