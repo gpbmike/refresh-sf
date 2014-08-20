@@ -5,6 +5,7 @@ var bodyParser   = require('body-parser');
 var UglifyJS     = require('uglify-js');
 var CleanCSS     = require('clean-css');
 var YUI          = require('yuicompressor');
+var HTMLMinifier = require('html-minifier');
 var errorhandler = require('errorhandler');
 var zlib         = require('zlib');
 var api          = express();
@@ -69,6 +70,20 @@ api.post('/css/', function (req, res) {
 
   res.send(output);
 
+});
+
+api.post('/html/', function (req, res) {
+
+  if (!req.param('code')) {
+    res.send(404, ':(');
+  }
+
+  var output = HTMLMinifier.minify(req.param('code'), {
+    removeComments: true,
+    collapseWhitespace: true
+  });
+
+  res.send({ code: output });
 });
 
 api.post('/yui/', function (req, res) {

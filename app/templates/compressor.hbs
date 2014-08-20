@@ -3,15 +3,11 @@
   <div class="row">
     <div class="col-lg-6"><h2>Input</h2></div>
     <div class="col-lg-6 text-right compressed-actions">
-        {{#unless compressDisabled}}
-          <button type="button" class="btn btn-primary pull-right" {{ action "compress" }}><span class="glyphicon glyphicon-resize-small"></span> Compress {{displayLanguage}}</button>
-        {{/unless}}
-        {{#if unknownLanguage}}
-          <div class="btn-group">
-            <button type="button" class="btn btn-primary" {{ action "compressJS" }}><span class="glyphicon glyphicon-resize-small"></span> Compress JS</button>
-            <button type="button" class="btn btn-primary" {{ action "compressCSS" }}><span class="glyphicon glyphicon-resize-small"></span> Compress CSS</button>
-          </div>
-        {{/if}}
+      <div class="btn-group">
+        <button type="button" {{ bind-attr disabled=isCompressing class=":btn guessJavascript:btn-primary" }} {{ action "compress" "javascript" }}><span class="glyphicon glyphicon-resize-small"></span> Javascript</button>
+        <button type="button" {{ bind-attr disabled=isCompressing class=":btn guessCss:btn-primary" }} {{ action "compress" "css" }}><span class="glyphicon glyphicon-resize-small"></span> CSS</button>
+        <button type="button" {{ bind-attr disabled=isCompressing class=":btn guessHtml:btn-primary" }} {{ action "compress" "html" }}><span class="glyphicon glyphicon-resize-small"></span> HTML</button>
+      </div>
     </div>
   </div>
 
@@ -20,11 +16,15 @@
       <div class="form-group">
         {{view App.DragAndDrop value=input class="form-control input" rows="10" placeholder=placeholder disabled=isCompressing}}
       </div>
-      <div class="form-group checkbox">
-        <label>
-          {{input type="checkbox" checked=useYui}}
-          Use YUI Compressor instead of UglifyJS/Clean-CSS.
-        </label>
+      <div {{bind-attr class=":form-group isHtml::checkbox"}}>
+        {{#if isHtml}}
+          <span class="text-warning">YUI Compressor does not support HTML compression.</span>
+            {{else}}
+          <label>
+            {{input type="checkbox" checked=useYui}}
+            Use YUI Compressor instead of UglifyJS/Clean-CSS.
+          </label>
+        {{/if}}
       </div>
     </div>
   </div>

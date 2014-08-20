@@ -19,6 +19,7 @@
     "errorhandler": "^1.0.2",
     "express": "^4.4.4",
     "highlight.js": "^8.0.0",
+    "html-minifier": "^0.6.6",
     "morgan": "^1.0.1",
     "uglify-js": "^2.4.14",
     "yuicompressor": "^2.4.8"

@@ -30,7 +30,7 @@
     apiUrl: window.ENV.apiUrl,
 
     language: null,
-    languages: ['javascript', 'css'],
+    languages: ['javascript', 'css', 'html'],
 
     useYui: localStorage.getItem('useYui'),
 
@@ -41,6 +41,10 @@
         localStorage.removeItem('useYui');
       }
     }.observes('useYui'),
+
+    isHtml: function () {
+      return this.get('language') === 'html';
+    }.property('language'),
 
     gzipUrl: function () {
       return this.get('apiUrl') + 'gz/' + this.get('filename');
@@ -54,9 +58,22 @@
       return !this.get('input') || !this.get('language') || this.get('isCompressing');
     }.property('input', 'language', 'isCompressing'),
 
+    guessJavascript: function () {
+      return this.get('language') === 'javascript';
+    }.property('language'),
+
+    guessCss: function () {
+      return this.get('language') === 'css';
+    }.property('language'),
+
+    guessHtml: function () {
+      return this.get('language') === 'html';
+    }.property('language'),
+
     checkLanguage: Ember.throttledObserver(function () {
 
       this.set('unknownLanguage', null);
+      this.set('language', null);
 
       if (Ember.isEmpty(this.get('input'))) {
         return;
@@ -78,9 +95,11 @@
 
       switch (this.get('language')) {
       case 'javascript':
-        return 'JavaScript';
+        return 'Javascript';
       case 'css':
         return 'CSS';
+      case 'html':
+        return 'HTML';
       default:
         return null;
       }
@@ -93,11 +112,11 @@
 
       this.set('isCompressing', true);
 
-      var url = this.get('apiUrl') + (this.get('useYui') ? 'yui' : language) + '/';
+      var minifier = this.get('useYui') && language !== 'html' ? 'yui' : language;
 
       return new Ember.RSVP.Promise(function(resolve, reject) {
         Ember.$.ajax({
-          url : url,
+          url : this.get('apiUrl') + minifier + '/',
           type: 'post',
           data: {
             code: this.get('input'),
@@ -121,7 +140,8 @@
 
     actions: {
       compress: function (language) {
-        this.compress(language || this.get('language')).then(function (code) {
+        language = language || this.get('language');
+        this.compress(language).then(function (code) {
 
           this.set('output', code);
 
@@ -129,24 +149,22 @@
             return;
           }
 
-          if (this.get('language') === 'css') {
+          switch (language) {
+          case 'css':
             this.set('filename', 'style.min.css');
-          } else {
+            break;
+          case 'javascript':
             this.set('filename', 'app.min.js');
+            break;
+          case 'html':
+            this.set('filename', 'index.min.html');
+            break;
           }
 
         }.bind(this), function (error) {
           this.set('error', true);
           this.set('output', error);
         }.bind(this));
-      },
-
-      compressJS: function () {
-        this.send('compress', 'javascript');
-      },
-
-      compressCSS: function () {
-        this.send('compress', 'css');
       },
 
       save: function () {
