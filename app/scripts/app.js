@@ -107,8 +107,14 @@
     }.property('language'),
 
     compress: function (language) {
-      this.set('output', null);
-      this.set('error', null);
+
+      if (!language) {
+        return Ember.RSVP.Promise.reject('Compression requires a language.');
+      }
+
+      if (!this.get('input')) {
+        return Ember.RSVP.Promise.reject('Compression requires input.');
+      }
 
       this.set('isCompressing', true);
 
@@ -126,7 +132,6 @@
         }).done(function (data) {
           resolve(data.code);
         }.bind(this)).fail(function (jqXHR) {
-          this.set('error', true);
           if (jqXHR.responseJSON.yuiError) {
             reject(jqXHR.responseJSON.yuiError);
           } else {
@@ -141,6 +146,10 @@
     actions: {
       compress: function (language) {
         language = language || this.get('language');
+
+        this.set('output', null);
+        this.set('error', null);
+
         this.compress(language).then(function (code) {
 
           this.set('output', code);
