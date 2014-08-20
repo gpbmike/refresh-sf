@@ -30,4 +30,5 @@ build:
   - 'htmlmin'
 
 deploy:
+  - 'build'
   - 'gh-pages'
