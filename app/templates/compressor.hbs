@@ -6,7 +6,7 @@
       <div class="btn-group">
         <button type="button" {{ bind-attr disabled=isCompressing class=":btn guessJavascript:btn-primary" }} {{ action "compress" "javascript" }}><span class="glyphicon glyphicon-resize-small"></span> Javascript</button>
         <button type="button" {{ bind-attr disabled=isCompressing class=":btn guessCss:btn-primary" }} {{ action "compress" "css" }}><span class="glyphicon glyphicon-resize-small"></span> CSS</button>
-        <button type="button" {{ bind-attr disabled=isCompressing class=":btn guessHtml:btn-primary" }} {{ action "compress" "html" }}><span class="glyphicon glyphicon-resize-small"></span> HTML</button>
+        <button type="button" {{ bind-attr disabled=htmlDisabled class=":btn guessHtml:btn-primary" }} {{ action "compress" "html" }}><span class="glyphicon glyphicon-resize-small"></span> HTML</button>
       </div>
     </div>
   </div>
@@ -14,7 +14,12 @@
   <div class="row">
     <div class="col-lg-12">
       <div class="form-group">
-        {{view App.DragAndDrop value=input class="form-control input" rows="10" placeholder=placeholder disabled=isCompressing}}
+        {{view "drag-and-drop"
+          value=input
+          class="form-control input"
+          rows="10"
+          placeholder="Paste your JavaScript or CSS code here, or drag in files from your desktop."
+          disabled=isCompressing}}
       </div>
       <div {{bind-attr class=":form-group isHtml::checkbox"}}>
         {{#if isHtml}}
@@ -53,7 +58,7 @@
 
   <div class="row">
     <div class="col-lg-12">
-      {{view App.OutputTextArea classBinding=":form-control :alert error:alert-danger:alert-success" rows="10" value=output}}
+      {{view "output-text-area" classBinding=":form-control :alert error:alert-danger:alert-success" rows="10" value=output}}
     </div>
   </div>
 

@@ -25,14 +25,16 @@
 
   App.CompressorController = Ember.Controller.extend({
 
-    placeholder: 'Paste your JavaScript or CSS code here, or drag in files from your desktop.',
-
     apiUrl: window.ENV.apiUrl,
 
     language: null,
     languages: ['javascript', 'css', 'html'],
 
     useYui: localStorage.getItem('useYui'),
+
+    htmlDisabled: function () {
+      return this.get('isCompressing') || this.get('useYui');
+    }.property('isCompressing', 'useYui'),
 
     rememberYui: function () {
       if (this.get('useYui')) {
@@ -213,7 +215,7 @@
   });
 
   // Allow users to drop files into textarea from desktop
-  App.DragAndDrop = Ember.TextArea.extend({
+  App.DragAndDropView = Ember.TextArea.extend({
     didInsertElement: function () {
       this.$().fileReaderJS({
         accept: 'text/*',
@@ -237,7 +239,7 @@
   });
 
   // Highlight the output textarea
-  App.OutputTextArea = Ember.TextArea.extend({
+  App.OutputTextAreaView = Ember.TextArea.extend({
     didInsertElement: function () {
       if (!this.get('parentView.controller.error')) {
         this.$().focus().select();
