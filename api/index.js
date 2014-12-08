@@ -41,13 +41,27 @@ api.post('/javascript/', function (req, res) {
     res.send(404, ':(');
   }
 
+  var options = {};
+
+  Object.keys(req.param('options')).forEach(function (key) {
+    var value = req.param('options')[key];
+    if (value === 'true') {
+      value = true;
+    }
+    if (value === 'false') {
+      value = false;
+    }
+    if (value === '') {
+      value = null;
+    }
+    options[key] = value;
+  });
+
   try {
     output = UglifyJS.minify(req.param('code'), {
       fromString: true,
       warnings: true,
-      compress: {
-        warnings: true
-      }
+      compress: options
     });
   } catch (error) {
     // users don't need to see filestructure of server
@@ -64,8 +78,27 @@ api.post('/css/', function (req, res) {
     res.send(404, ':(');
   }
 
+  var options = {};
+
+  Object.keys(req.param('options')).forEach(function (key) {
+    var value = req.param('options')[key];
+    if (value === 'true') {
+      value = true;
+    }
+    if (value === 'false') {
+      value = false;
+    }
+    if (value === '') {
+      value = null;
+    }
+    if (key === 'roundingPrecision') {
+      value = parseInt(value, 10) || 2;
+    }
+    options[key] = value;
+  });
+
   var output = {
-    code: new CleanCSS({ processImport : false }).minify(req.param('code'))
+    code: new CleanCSS(options).minify(req.param('code'))
   };
 
   res.send(output);

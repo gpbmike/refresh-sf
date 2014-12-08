@@ -1,0 +1,81 @@
+<button type="button" class="btn btn-primary" {{ action "defaultOptions" "css"}}>Use Clean-CSS Defaults</button>
+
+<div class="checkbox">
+  <label>
+    {{input type="checkbox" checked=compressOptions.css.options.advanced}}
+    <code>advanced</code> - set to false to disable advanced optimizations - selector &amp; property merging, reduction, etc.
+  </label>
+</div>
+<div class="checkbox">
+  <label>
+    {{input type="checkbox" checked=compressOptions.css.options.aggressiveMerging}}
+    <code>aggressiveMerging</code> - set to false to disable aggressive merging of properties.
+  </label>
+</div>
+<div class="checkbox">
+  <label>
+    {{input type="checkbox" checked=compressOptions.css.options.benchmark}}
+    <code>benchmark</code> - turns on benchmarking mode measuring time spent on cleaning up (run npm run bench to see example)
+  </label>
+</div>
+<div class="checkbox">
+  <label>
+    {{input type="checkbox" checked=compressOptions.css.options.compatibility}}
+    <code>compatibility</code> - enables compatibility mode, see below for more examples
+  </label>
+</div>
+<div class="checkbox">
+  <label>
+    {{input type="checkbox" checked=compressOptions.css.options.debug}}
+    <code>debug</code> - set to true to get minification statistics under stats property (see test/custom-test.js for examples)
+  </label>
+</div>
+<div class="checkbox">
+  <label>
+    {{input type="checkbox" checked=compressOptions.css.options.inliner placeholder="JSON format"}}
+    <code>inliner</code> - a hash of options for @import inliner, see test/protocol-imports-test.js for examples
+  </label>
+</div>
+<div class="checkbox">
+  <label>
+    {{input type="checkbox" checked=compressOptions.css.options.keepBreaks}}
+    <code>keepBreaks</code> - whether to keep line breaks
+  </label>
+</div>
+<div class="checkbox">
+  <label>
+    {{input type="checkbox" checked=compressOptions.css.options.processImport}}
+    <code>processImport</code> - whether to process @import rules
+  </label>
+</div>
+<div class="checkbox">
+  <label>
+    {{input type="checkbox" checked=compressOptions.css.options.rebase}}
+    <code>rebase</code> - set to false to skip URL rebasing
+  </label>
+</div>
+<div class="form-group">
+  <label><code>keepSpecialComments</code></label>
+  {{input class="form-control" value=compressOptions.css.options.keepSpecialComments}}
+  <p class="help-block">* for keeping all, 1 for keeping first one only, 0 for removing all</p>
+</div>
+<div class="form-group">
+  <label><code>relativeTo</code></label>
+  {{input class="form-control" value=compressOptions.css.options.relativeTo}}
+  <p class="help-block">path to <strong>resolve</strong> relative @import rules and URLs</p>
+</div>
+<div class="form-group">
+  <label><code>root</code></label>
+  {{input class="form-control" value=compressOptions.css.options.root}}
+  <p class="help-block">path to <strong>resolve</strong> absolute @import rules and <strong>rebase</strong> relative URLs</p>
+</div>
+<div class="form-group">
+  <label><code>roundingPrecision</code></label>
+  {{input type="number" class="form-control" value=compressOptions.css.options.roundingPrecision}}
+  <p class="help-block">rounding precision; -1 disables rounding</p>
+</div>
+<div class="form-group">
+  <label><code>target</code></label>
+  {{input class="form-control" value=compressOptions.css.options.target}}
+  <p class="help-block">path to a folder or an output file to which <strong>rebase</strong> all URLs</p>
+</div>

@@ -1,0 +1,133 @@
+<button type="button" class="btn btn-primary" {{ action "defaultOptions" "javascript"}}>Use UglifyJS 2 Defaults</button>
+
+<div class="checkbox">
+  <label>
+    {{input type="checkbox" checked=compressOptions.javascript.options.sequences}}
+    <code>sequences</code> &mdash; join consecutive simple statements using the comma operator
+  </label>
+</div>
+<div class="checkbox">
+  <label>
+    {{input type="checkbox" checked=compressOptions.javascript.options.properties}}
+    <code>properties</code> &mdash; rewrite property access using the dot notation, for example foo["bar"] → foo.bar
+  </label>
+</div>
+<div class="checkbox">
+  <label>
+    {{input type="checkbox" checked=compressOptions.javascript.options.dead_code}}
+    <code>dead_code</code> &mdash; remove unreachable code
+  </label>
+</div>
+<div class="checkbox">
+  <label>
+    {{input type="checkbox" checked=compressOptions.javascript.options.drop_debugger}}
+    <code>drop_debugger</code> &mdash; remove debugger; statements
+  </label>
+</div>
+<div class="checkbox">
+  <label>
+    {{input type="checkbox" checked=compressOptions.javascript.options.unsafe}}
+    <code>unsafe</code> &mdash; default false. apply "unsafe" transformations
+  </label>
+</div>
+<div class="checkbox">
+  <label>
+    {{input type="checkbox" checked=compressOptions.javascript.options.conditionals}}
+    <code>conditionals</code> &mdash; apply optimizations for if-s and conditional expressions
+  </label>
+</div>
+<div class="checkbox">
+  <label>
+    {{input type="checkbox" checked=compressOptions.javascript.options.comparisons}}
+    <code>comparisons</code> &mdash; apply certain optimizations to binary nodes, for example: !(a <= b) → a > b (only when unsafe), attempts to negate binary nodes, e.g. a = !b && !c && !d && !e → a=!(b||c||d||e) etc.
+  </label>
+</div>
+<div class="checkbox">
+  <label>
+    {{input type="checkbox" checked=compressOptions.javascript.options.evaluate}}
+    <code>evaluate</code> &mdash; attempt to evaluate constant expressions
+  </label>
+</div>
+<div class="checkbox">
+  <label>
+    {{input type="checkbox" checked=compressOptions.javascript.options.booleans}}
+    <code>booleans</code> &mdash; various optimizations for boolean context, for example !!a ? b : c → a ? b : c
+  </label>
+</div>
+<div class="checkbox">
+  <label>
+    {{input type="checkbox" checked=compressOptions.javascript.options.loops}}
+    <code>loops</code> &mdash; optimizations for do, while and for loops when we can statically determine the condition
+  </label>
+</div>
+<div class="checkbox">
+  <label>
+    {{input type="checkbox" checked=compressOptions.javascript.options.unused}}
+    <code>unused</code> &mdash; drop unreferenced functions and variables
+  </label>
+</div>
+<div class="checkbox">
+  <label>
+    {{input type="checkbox" checked=compressOptions.javascript.options.hoist_funs}}
+    <code>hoist_funs</code> &mdash; hoist function declarations
+  </label>
+</div>
+<div class="checkbox">
+  <label>
+    {{input type="checkbox" checked=compressOptions.javascript.options.hoist_vars}}
+    <code>hoist_vars</code> &mdash; default false. hoist var declarations (this is false by default because it seems to increase the size of the output in general)
+  </label>
+</div>
+<div class="checkbox">
+  <label>
+    {{input type="checkbox" checked=compressOptions.javascript.options.if_return}}
+    <code>if_return</code> &mdash; optimizations for if/return and if/continue
+  </label>
+</div>
+<div class="checkbox">
+  <label>
+    {{input type="checkbox" checked=compressOptions.javascript.options.join_vars}}
+    <code>join_vars</code> &mdash; join consecutive var statements
+  </label>
+</div>
+<div class="checkbox">
+  <label>
+    {{input type="checkbox" checked=compressOptions.javascript.options.cascade}}
+    <code>cascade</code> &mdash; small optimization for sequences, transform x, x into x and x = something(), x into x = something()
+  </label>
+</div>
+<div class="checkbox">
+  <label>
+    {{input type="checkbox" checked=compressOptions.javascript.options.warnings}}
+    <code>warnings</code> &mdash; display warnings when dropping unreachable code or unused declarations etc.
+  </label>
+</div>
+<div class="checkbox">
+  <label>
+    {{input type="checkbox" checked=compressOptions.javascript.options.negate_iife}}
+    <code>negate_iife</code> &mdash; negate "Immediately-Called Function Expressions" where the return value is discarded, to avoid the parens that the code generator would insert.
+  </label>
+</div>
+<div class="checkbox">
+  <label>
+    {{input type="checkbox" checked=compressOptions.javascript.options.pure_getters}}
+    <code>pure_getters</code> &mdash; the default is false. If you pass true for this, UglifyJS will assume that object property access (e.g. foo.bar or foo["bar"]) doesn't have any side effects.
+  </label>
+</div>
+<div class="checkbox">
+  <label>
+    {{input type="checkbox" checked=compressOptions.javascript.options.drop_console}}
+    <code>drop_console</code> &mdash; default false. Pass true to discard calls to console.* functions.
+  </label>
+</div>
+<div class="checkbox">
+  <label>
+    {{input type="checkbox" checked=compressOptions.javascript.options.keep_fargs}}
+    <code>keep_fargs</code> &mdash; default false. Pass true to prevent the compressor from discarding unused function arguments. You need this for code which relies on Function.length.
+  </label>
+</div>
+<div class="form-group">
+  <label><code>pure_funcs</code></label>
+  {{input class="form-control" placeholder="comma separated list" value=compressOptions.javascript.options.pure_funcs_cs}}
+  <p class="help-block">default null. You can pass an array of names and UglifyJS will assume that those functions do not produce side effects. <span class="text-danger">DANGER: will not check if the name is redefined in scope.</span> An example case here, for instance var q = Math.floor(a/b). If variable q is not used elsewhere, UglifyJS will drop it, but will still keep the Math.floor(a/b), not knowing what it does. You can pass pure_funcs: [ 'Math.floor' ] to let it know that this function won't produce any side effect, in which case the whole statement would get discarded. The current implementation adds some overhead (compression will be slower).</p>
+</div>

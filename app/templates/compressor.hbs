@@ -1,12 +1,12 @@
 {{#unless output}}
 
   <div class="row">
-    <div class="col-lg-6"><h2>Input</h2></div>
-    <div class="col-lg-6 text-right compressed-actions">
+    <div class="col-sm-6"><h2>Input</h2></div>
+    <div class="col-sm-6 text-right compressed-actions">
       <div class="btn-group">
-        <button type="button" {{ bind-attr disabled=isCompressing class=":btn guessJavascript:btn-primary" }} {{ action "compress" "javascript" }}><span class="glyphicon glyphicon-resize-small"></span> Javascript</button>
-        <button type="button" {{ bind-attr disabled=isCompressing class=":btn guessCss:btn-primary" }} {{ action "compress" "css" }}><span class="glyphicon glyphicon-resize-small"></span> CSS</button>
-        <button type="button" {{ bind-attr disabled=htmlDisabled class=":btn guessHtml:btn-primary" }} {{ action "compress" "html" }}><span class="glyphicon glyphicon-resize-small"></span> HTML</button>
+        <button type="button" {{ bind-attr disabled=isCompressing class=":btn guessJavascript:btn-primary:btn-default" }} {{ action "compress" "javascript" }}><span class="glyphicon glyphicon-resize-small"></span> Javascript</button>
+        <button type="button" {{ bind-attr disabled=isCompressing class=":btn guessCss:btn-primary:btn-default" }} {{ action "compress" "css" }}><span class="glyphicon glyphicon-resize-small"></span> CSS</button>
+        <button type="button" {{ bind-attr disabled=htmlDisabled class=":btn guessHtml:btn-primary:btn-default" }} {{ action "compress" "html" }}><span class="glyphicon glyphicon-resize-small"></span> HTML</button>
       </div>
     </div>
   </div>
@@ -21,18 +21,26 @@
           placeholder="Paste your JavaScript or CSS code here, or drag in files from your desktop."
           disabled=isCompressing}}
       </div>
-      <div {{bind-attr class=":form-group isHtml::checkbox"}}>
-        {{#if isHtml}}
-          <span class="text-warning">YUI Compressor does not support HTML compression.</span>
-            {{else}}
-          <label>
-            {{input type="checkbox" checked=useYui}}
-            Use YUI Compressor instead of UglifyJS/Clean-CSS.
-          </label>
-        {{/if}}
-      </div>
     </div>
   </div>
+
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#options" role="tab" data-toggle="tab">Options</a></li>
+    <li role="presentation"><a href="#uglify" role="tab" data-toggle="tab">UglifyJS 2</a></li>
+    <li role="presentation"><a href="#cleancss" role="tab" data-toggle="tab">Clean-CSS</a></li>
+    <li role="presentation"><a href="#htmlminifier" role="tab" data-toggle="tab">HTML Minifier</a></li>
+    <li role="presentation"><a href="#yui" role="tab" data-toggle="tab">YUI Compressor</a></li>
+  </ul>
+
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="options">{{partial 'options/options'}}</div>
+    <div role="tabpanel" class="tab-pane" id="uglify">{{partial 'options/uglify'}}</div>
+    <div role="tabpanel" class="tab-pane" id="cleancss">{{partial 'options/cleancss'}}</div>
+    <div role="tabpanel" class="tab-pane" id="htmlminifier">{{partial 'options/htmlminifier'}}</div>
+    <div role="tabpanel" class="tab-pane" id="yui">{{partial 'options/yui'}}</div>
+  </div>
+
+  <hr>
 
 {{else}}
 

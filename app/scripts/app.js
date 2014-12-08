@@ -32,6 +32,11 @@
 
     useYui: localStorage.getItem('useYui'),
 
+    compressOptions: Ember.Object.create({
+      javascript: window.uglifyOptions,
+      css: window.cleancssOptions
+    }),
+
     htmlDisabled: function () {
       return this.get('isCompressing') || this.get('useYui');
     }.property('isCompressing', 'useYui'),
@@ -122,13 +127,16 @@
 
       var minifier = this.get('useYui') && language !== 'html' ? 'yui' : language;
 
+      var options = this.get('compressOptions').get(minifier).get('options').serialize();
+
       return new Ember.RSVP.Promise(function(resolve, reject) {
         Ember.$.ajax({
           url : this.get('apiUrl') + minifier + '/',
           type: 'post',
           data: {
             code: this.get('input'),
-            type: this.get('language')
+            type: this.get('language'),
+            options: options
           },
           dataType: 'json'
         }).done(function (data) {
@@ -209,6 +217,10 @@
           controller.set('gistUrl', response.files[controller.get('filename')].raw_url);
         });
 
+      },
+
+      defaultOptions: function (set) {
+        this.get('compressOptions').get(set).get('options').reset();
       }
     }
 

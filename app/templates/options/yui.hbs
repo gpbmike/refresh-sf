@@ -1,0 +1,12 @@
+<div {{bind-attr class=":form-group isHtml::checkbox"}}>
+  {{#if isHtml}}
+    <span class="text-warning">YUI Compressor does not support HTML compression.</span>
+      {{else}}
+    <label>
+      {{input type="checkbox" checked=useYui}}
+      Use YUI Compressor instead of UglifyJS/Clean-CSS.
+    </label>
+  {{/if}}
+</div>
+
+Todo: Add YUI Compressor options.
