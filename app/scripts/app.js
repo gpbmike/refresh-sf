@@ -129,6 +129,9 @@
 
       var options = this.get('compressOptions').get(minifier).get('options').serialize();
 
+      // see what compressors are being used.
+      ga('send', 'event', 'compressor', 'compress', minifier);
+
       return new Ember.RSVP.Promise(function(resolve, reject) {
         Ember.$.ajax({
           url : this.get('apiUrl') + minifier + '/',
