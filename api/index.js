@@ -111,12 +111,45 @@ api.post('/html/', function (req, res) {
     res.send(404, ':(');
   }
 
-  var output = HTMLMinifier.minify(req.param('code'), {
-    removeComments: true,
-    collapseWhitespace: true
+  var options = {};
+
+  Object.keys(req.param('options')).forEach(function (key) {
+
+    var value = req.param('options')[key];
+
+    switch (key) {
+      case 'processScripts':
+        value = value.split(',');
+        break;
+      case 'ignoreCustomComments':
+      case 'customAttrAssign':
+      case 'customAttrSurround':
+        value = value.split(',').map(function (re) {
+          return new RegExp(re);
+        });
+        break;
+      case 'customAttrCollapse':
+        value = new RegExp(value);
+        break;
+      case 'maxLineLength':
+        value = parseInt(value, 10);
+        break;
+      default:
+        value = value === 'true';
+        break;
+    }
+
+    options[key] = value;
   });
 
-  res.send({ code: output });
+  try {
+    output = HTMLMinifier.minify(req.param('code'), options);
+    res.send({ code: output });
+  } catch (error) {
+    console.log(arguments);
+    res.json(500, error);
+  }
+
 });
 
 api.post('/yui/', function (req, res) {
@@ -150,7 +183,7 @@ api.all('*', function (req, res) {
   res.send(404);
 });
 
-port = Number(process.env.PORT || 3000)
+port = Number(process.env.PORT || 3000);
 
 api.listen(port, function() {
   console.log('Server listening on port ' + port);

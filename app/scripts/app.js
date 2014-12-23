@@ -34,7 +34,9 @@
 
     compressOptions: Ember.Object.create({
       javascript: window.uglifyOptions,
-      css: window.cleancssOptions
+      css: window.cleancssOptions,
+      html: window.htmlminifierOptions,
+      yui: window.yuiOptions
     }),
 
     htmlDisabled: function () {

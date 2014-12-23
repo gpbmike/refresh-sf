@@ -1,1 +1,170 @@
-Todo: Add HTML minifier options.
+<button type="button" class="btn btn-primary" {{ action "defaultOptions" "html"}}>Use HTML Minify Defaults</button>
+
+<div class="checkbox">
+  <label>
+    {{input type="checkbox" checked=compressOptions.html.options.removeComments}}
+    <code>removeComments</code> &mdash; <a href="http://perfectionkills.com/experimenting-with-html-minifier/#remove_comments">Strip HTML comments</a>
+  </label>
+</div>
+<div class="checkbox">
+  <label>
+    {{input type="checkbox" checked=compressOptions.html.options.removeCommentsFromCDATA}}
+    <code>removeCommentsFromCDATA</code> &mdash; <a href="http://perfectionkills.com/experimenting-with-html-minifier/#remove_comments_from_scripts_and_styles">Strip HTML comments from scripts and styles</a>
+  </label>
+</div>
+<div class="checkbox">
+  <label>
+    {{input type="checkbox" checked=compressOptions.html.options.removeCDATASectionsFromCDATA}}
+    <code>removeCDATASectionsFromCDATA</code> &mdash; <a href="http://perfectionkills.com/experimenting-with-html-minifier/#remove_cdata_sections">Remove CDATA sections from script and style elements</a>
+  </label>
+</div>
+<div class="checkbox">
+  <label>
+    {{input type="checkbox" checked=compressOptions.html.options.collapseWhitespace}}
+    <code>collapseWhitespace</code> &mdash; <a href="http://perfectionkills.com/experimenting-with-html-minifier/#collapse_whitespace">Collapse white space that contributes to text nodes in a document tree.</a>
+  </label>
+</div>
+<div class="checkbox">
+  <label>
+    {{input type="checkbox" checked=compressOptions.html.options.conservativeCollapse}}
+    <code>conservativeCollapse</code> &mdash; Always collapse to 1 space (never remove it entirely). Must be used in conjunction with <code>collapseWhitespace=true</code>
+  </label>
+</div>
+<div class="checkbox">
+  <label>
+    {{input type="checkbox" checked=compressOptions.html.options.preserveLineBreaks}}
+    <code>preserveLineBreaks</code> &mdash; Always collapse to 1 line break (never remove it entirely) when whitespace between tags include a line break. Must be used in conjunction with <code>collapseWhitespace=true</code>
+  </label>
+</div>
+<div class="checkbox">
+  <label>
+    {{input type="checkbox" checked=compressOptions.html.options.collapseBooleanAttributes}}
+    <code>collapseBooleanAttributes</code> &mdash; <a href="http://perfectionkills.com/experimenting-with-html-minifier/#collapse_boolean_attributes">Omit attribute values from boolean attributes</a>
+  </label>
+</div>
+<div class="checkbox">
+  <label>
+    {{input type="checkbox" checked=compressOptions.html.options.removeAttributeQuotes}}
+    <code>removeAttributeQuotes</code> &mdash; <a href="http://perfectionkills.com/experimenting-with-html-minifier/#remove_attribute_quotes">Remove quotes around attributes when possible.</a>
+  </label>
+</div>
+<div class="checkbox">
+  <label>
+    {{input type="checkbox" checked=compressOptions.html.options.removeRedundantAttributes}}
+    <code>removeRedundantAttributes</code> &mdash; <a href="http://perfectionkills.com/experimenting-with-html-minifier/#remove_redundant_attributes">Remove attributes when value matches default.</a>
+  </label>
+</div>
+<div class="checkbox">
+  <label>
+    {{input type="checkbox" checked=compressOptions.html.options.preventAttributesEscaping}}
+    <code>preventAttributesEscaping</code> &mdash; Prevents the escaping of the values of attributes.
+  </label>
+</div>
+<div class="checkbox">
+  <label>
+    {{input type="checkbox" checked=compressOptions.html.options.useShortDoctype}}
+    <code>useShortDoctype</code> &mdash; <a href="http://perfectionkills.com/experimenting-with-html-minifier/#use_short_doctype">Replaces the doctype with the short (HTML5) doctype</a>
+  </label>
+</div>
+<div class="checkbox">
+  <label>
+    {{input type="checkbox" checked=compressOptions.html.options.removeEmptyAttributes}}
+    <code>removeEmptyAttributes</code> &mdash; <a href="http://perfectionkills.com/experimenting-with-html-minifier/#remove_empty_or_blank_attributes">Remove all attributes with whitespace-only values</a>
+  </label>
+</div>
+<div class="checkbox">
+  <label>
+    {{input type="checkbox" checked=compressOptions.html.options.removeScriptTypeAttributes}}
+    <code>removeScriptTypeAttributes</code> &mdash; Remove <code>type="text/javascript"</code> from <code>script</code> tags. Other <code>type</code> attribute values are left intact.
+  </label>
+</div>
+<div class="checkbox">
+  <label>
+    {{input type="checkbox" checked=compressOptions.html.options.removeStyleLinkTypeAttributes}}
+    <code>removeStyleLinkTypeAttributes</code> &mdash; Remove <code>type="text/css"</code> from <code>style</code> and <code>link</code> tags. Other <code>type</code> attribute values are left intact.
+  </label>
+</div>
+<div class="checkbox">
+  <label>
+    {{input type="checkbox" checked=compressOptions.html.options.removeOptionalTags}}
+    <code>removeOptionalTags</code> &mdash; <a href="http://perfectionkills.com/experimenting-with-html-minifier/#remove_optional_tags">Remove unrequired tags</a>
+  </label>
+</div>
+<div class="checkbox">
+  <label>
+    {{input type="checkbox" checked=compressOptions.html.options.removeIgnored}}
+    <code>removeIgnored</code> &mdash; Remove all tags starting and ending with <code>&lt;%</code>, <code>%&gt;</code>, <code>&lt;?</code>, <code>?&gt;</code>
+  </label>
+</div>
+<div class="checkbox disabled">
+  <label>
+    {{input type="checkbox" checked=compressOptions.html.options.lint disabled=true}}
+    <code>lint</code> &mdash; <a href="http://perfectionkills.com/experimenting-with-html-minifier/#validate_input_through_html_lint">Toggle linting</a> (Not supported)
+  </label>
+</div>
+<div class="checkbox">
+  <label>
+    {{input type="checkbox" checked=compressOptions.html.options.removeEmptyElements}}
+    <code>removeEmptyElements</code> &mdash; <a href="http://perfectionkills.com/experimenting-with-html-minifier/#remove_empty_elements">Remove all elements with empty contents</a>
+  </label>
+</div>
+<div class="checkbox">
+  <label>
+    {{input type="checkbox" checked=compressOptions.html.options.keepClosingSlash}}
+    <code>keepClosingSlash</code> &mdash; Keep the trailing slash on singleton elements
+  </label>
+</div>
+<div class="checkbox">
+  <label>
+    {{input type="checkbox" checked=compressOptions.html.options.caseSensitive}}
+    <code>caseSensitive</code> &mdash; Treat attributes in case sensitive manner (useful for custom html tags.)
+  </label>
+</div>
+<div class="checkbox">
+  <label>
+    {{input type="checkbox" checked=compressOptions.html.options.minifyJS}}
+    <code>minifyJS</code> &mdash; Minify Javascript in script elements and on* attributes (uses <a href="https://github.com/mishoo/UglifyJS2">UglifyJS</a>)
+  </label>
+</div>
+<div class="checkbox">
+  <label>
+    {{input type="checkbox" checked=compressOptions.html.options.minifyCSS}}
+    <code>minifyCSS</code> &mdash; Minify CSS in style elements and style attributes (uses <a href="https://github.com/GoalSmashers/clean-css">clean-css</a>)
+  </label>
+</div>
+<div class="checkbox">
+  <label>
+    {{input type="checkbox" checked=compressOptions.html.options.minifyURLs}}
+    <code>minifyURLs</code> &mdash; Minify URLs in various attributes (uses <a href="https://github.com/stevenvachon/relateurl">relateurl</a>)
+  </label>
+</div>
+<div class="form-group">
+  <label><code>ignoreCustomComments</code></label>
+  {{input class="form-control" value=compressOptions.html.options.ignoreCustomComments}}
+  <p class="help-block">Comma separated array of regex'es that allow to ignore certain comments, when matched</p>
+</div>
+<div class="form-group">
+  <label><code>processScripts</code></label>
+  {{input class="form-control" value=compressOptions.html.options.processScripts}}
+  <p class="help-block">Comma separated array of strings corresponding to types of script elements to process through minifier (e.g. text/ng-template, text/x-handlebars-template, etc.)</p>
+</div>
+<div class="form-group">
+  <label><code>maxLineLength</code></label>
+  {{input type="number" class="form-control" value=compressOptions.html.options.maxLineLength}}
+  <p class="help-block">Specify a maximum line length. Compressed output will be split by newlines at valid HTML split-points.</p>
+</div>
+<div class="form-group">
+  <label><code>customAttrAssign</code></label>
+  {{input class="form-control" value=compressOptions.html.options.customAttrAssign}}
+  <p class="help-block">Comma separated array of regex'es that allow to support custom attribute assign expressions (e.g. '&lt;div flex?="\{{mode != cover}}"&gt;&lt;/div&gt;')</p>
+</div>
+<div class="form-group">
+  <label><code>customAttrSurround</code></label>
+  {{input class="form-control" value=compressOptions.html.options.customAttrSurround}}
+  <p class="help-block">Comma separated array of regex'es that allow to support custom attribute surround expressions (e.g. &lt;input \{{#if value}}checked="checked"\{{/if}}&gt;)</p>
+</div>
+<div class="form-group">
+  <label><code>customAttrCollapse</code></label>
+  {{input class="form-control" value=compressOptions.html.options.customAttrCollapse}}
+  <p class="help-block">Regex that specifies custom attribute to strip newlines from (e.g. /ng\-class/)</p>
+</div>

@@ -30,7 +30,7 @@ var defaults = Ember.Object.create();
   'target'
 ].forEach(function (option) {
   defaults.set(option, null);
-})
+});
 
 // special
 defaults.set('keepSpecialComments', '*');
