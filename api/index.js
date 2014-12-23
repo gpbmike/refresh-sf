@@ -117,37 +117,39 @@ api.post('/html/', function (req, res) {
 
     var value = req.param('options')[key];
 
+    if (!value) {
+      return;
+    }
+
     switch (key) {
       case 'processScripts':
-        value = value.split(',');
+        options[key] = value.split(',');
         break;
       case 'ignoreCustomComments':
       case 'customAttrAssign':
       case 'customAttrSurround':
-        value = value.split(',').map(function (re) {
+        options[key] = value.split(',').map(function (re) {
           return new RegExp(re);
         });
         break;
       case 'customAttrCollapse':
-        value = new RegExp(value);
+        options[key] = new RegExp(value);
         break;
       case 'maxLineLength':
-        value = parseInt(value, 10);
+        options[key] = parseInt(value, 10);
         break;
       default:
-        value = value === 'true';
+        options[key] = value === 'true';
         break;
     }
 
-    options[key] = value;
   });
 
   try {
     output = HTMLMinifier.minify(req.param('code'), options);
     res.send({ code: output });
   } catch (error) {
-    console.log(arguments);
-    res.json(500, error);
+    res.json(500, 'HTML Minify does not report any useful errors, but there was an error. :(');
   }
 
 });
