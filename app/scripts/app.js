@@ -235,7 +235,7 @@
   App.DragAndDropView = Ember.TextArea.extend({
     didInsertElement: function () {
       this.$().fileReaderJS({
-        accept: 'text/*',
+        accept: /[text\/*|application\/javascript]/i,
         dragClass: 'dragging',
         readAsDefault: 'Text',
         on: {
