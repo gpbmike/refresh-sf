@@ -177,7 +177,9 @@ api.post('/yui/', function (req, res) {
       case 'nomunge':
       case 'preserve-semi':
       case 'disable-optimizations':
-        options[key] = true;
+        if (value === 'true') {
+          options[key] = true;
+        }
         break;
       case 'line-break':
         value = parseInt(value, 10);
