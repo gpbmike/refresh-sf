@@ -12,7 +12,7 @@ module.exports = {
   },
   html: {
     files: './app/**/*.html',
-    tasks: ['preprocess:dev']
+    tasks: ['preprocess:dev', 'copy:dev']
   },
   templates: {
     files: './app/**/*.hbs',
