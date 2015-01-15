@@ -27,7 +27,7 @@ module.exports = {
         expand: true,
         cwd: './app/yui/',
         src: ['**/*'],
-        dest: './tmp/yui/'
+        dest: './dist/yui/'
       }
     ]
   }
