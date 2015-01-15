@@ -160,9 +160,35 @@ api.post('/yui/', function (req, res) {
     res.send(404, ':(');
   }
 
-  YUI.compress(req.param('code'), {
+  var options = {
     type: req.param('type') === 'javascript' ? 'js' : 'css'
-  }, function(err, data, extra) {
+  };
+
+  Object.keys(req.param('options')).forEach(function (key) {
+
+    var value = req.param('options')[key];
+
+    if (!value) {
+      return;
+    }
+
+    switch (key) {
+      case 'verbose':
+      case 'nomunge':
+      case 'preserve-semi':
+      case 'disable-optimizations':
+        options[key] = true;
+        break;
+      case 'line-break':
+        value = parseInt(value, 10);
+        if (value) {
+          options[key] = value;
+        }
+    }
+
+  });
+
+  YUI.compress(req.param('code'), options, function(err, data, extra) {
     //err   If compressor encounters an error, it's stderr will be here
     //data  The compressed string, you write it out where you want it
     //extra The stderr (warnings are printed here in case you want to echo them

@@ -2,6 +2,21 @@
 
   var defaults = Ember.Object.create();
 
+  [
+    'verbose',
+    'nomunge',
+    'preserve-semi',
+    'disable-optimizations'
+  ].forEach(function (option) {
+    defaults.set(option, true);
+  });
+
+  [
+    'line-break'
+  ].forEach(function (option) {
+    defaults.set(option, null);
+  })
+
   var options = Ember.Object.create(defaults);
 
   // override defaults with stored options
