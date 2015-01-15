@@ -8,7 +8,7 @@
     'preserve-semi',
     'disable-optimizations'
   ].forEach(function (option) {
-    defaults.set(option, true);
+    defaults.set(option, false);
   });
 
   [
@@ -21,7 +21,7 @@
 
   // override defaults with stored options
   Ember.keys(options).forEach(function (key) {
-    var storageKey = 'uglify.' + key;
+    var storageKey = 'yui.' + key;
     var storageItem = localStorage.getItem(storageKey);
     if (storageItem !== null && storageItem !== '') {
 
@@ -67,5 +67,7 @@
     defaults: defaults,
     options: options
   });
+
+  window.console.log(window.yuiOptions);
 
 })();

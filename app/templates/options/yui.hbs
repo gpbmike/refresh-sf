@@ -15,13 +15,13 @@
   <label>Global Options</label>
   <div class="checkbox">
     <label >
-      {{input type="checkbox" checked=compressOptions.yui.verbose}}
+      {{input type="checkbox" checked=compressOptions.yui.options.verbose}}
       <code>verbose</code> &mdash; Display informational messages and warnings.
     </label>
   </div>
   <div class="checkbox">
     <label>
-      {{input type="number" value=compressOptions.yui.line-break}}
+      {{input type="number" value=compressOptions.yui.options.line-break}}
       <code>line-break</code> &mdash; Insert a line break after the specified column number.
     </label>
   </div>
@@ -31,19 +31,19 @@
   <label>JavaScript Options</label>
   <div class="checkbox">
     <label>
-      {{input type="checkbox" checked=compressOptions.yui.nomunge}}
+      {{input type="checkbox" checked=compressOptions.yui.options.nomunge}}
       <code>nomunge</code> &mdash; Minify only, do not obfuscate.
     </label>
   </div>
   <div class="checkbox">
     <label>
-      {{input type="checkbox" checked=compressOptions.yui.preserve-semi}}
+      {{input type="checkbox" checked=compressOptions.yui.options.preserve-semi}}
       <code>preserve-semi </code> &mdash; Preserve all semicolons.
     </label>
   </div>
   <div class="checkbox">
     <label>
-      {{input type="checkbox" checked=compressOptions.yui.disable-optimizations}}
+      {{input type="checkbox" checked=compressOptions.yui.options.disable-optimizations}}
       <code>disable-optimizations</code> &mdash; Disable all micro optimizations.
     </label>
   </div>
