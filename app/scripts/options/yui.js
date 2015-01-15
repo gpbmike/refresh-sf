@@ -68,6 +68,4 @@
     options: options
   });
 
-  window.console.log(window.yuiOptions);
-
 })();
