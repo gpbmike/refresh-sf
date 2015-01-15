@@ -28,6 +28,10 @@ module.exports = {
         cwd: './app/yui/',
         src: ['**/*'],
         dest: './dist/yui/'
+      },
+      {
+        src: './app/CNAME',
+        dest: './dist/CNAME'
       }
     ]
   }
