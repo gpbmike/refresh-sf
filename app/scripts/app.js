@@ -118,6 +118,13 @@
         this.set('unknownLanguage', true);
       }
 
+      if (!window.localStorage.getItem('didCompress')) {
+        Ember.$('.btn-group').popover({
+          content: 'We try to guess the file type, but do not always get it right. Click your file type to compress when you are ready.',
+          placement: 'left'
+        }).popover('show');
+      }
+
     }, 'input', 500),
 
     displayLanguage: function () {
@@ -144,6 +151,9 @@
       if (!this.get('input')) {
         return Ember.RSVP.Promise.reject('Compression requires input.');
       }
+
+      Ember.$('.btn-group').popover('destroy');
+      window.localStorage.setItem('didCompress', true);
 
       var controller = this;
 
