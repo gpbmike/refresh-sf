@@ -8,6 +8,18 @@
     }, key);
   };
 
+  Ember.Handlebars.helper('filesize', function(bytes) {
+    var isNegative = bytes < 0;
+    bytes = Math.abs(bytes);
+    if      (bytes>=1000000000) {bytes=(bytes/1000000000).toFixed(2)+' GB';}
+    else if (bytes>=1000000)    {bytes=(bytes/1000000).toFixed(2)+' MB';}
+    else if (bytes>=1000)       {bytes=(bytes/1000).toFixed(2)+' KB';}
+    else if (bytes>1)           {bytes=bytes+' bytes';}
+    else if (bytes==1)          {bytes=bytes+' byte';}
+    else                        {bytes='0 byte';}
+    return isNegative ? '-' + bytes : bytes;
+  });
+
   var App = Ember.Application.create({
     rootElement             : '#compressor',
     LOG_ACTIVE_GENERATION   : true,
@@ -78,6 +90,14 @@
     guessHtml: function () {
       return this.get('language') === 'html';
     }.property('language'),
+
+    delta: function () {
+      return this.get('output.length') - this.get('input.length');
+    }.property('input.length', 'output.length'),
+
+    isGoodDelta: function () {
+      return this.get('delta') < 0;
+    }.property('delta'),
 
     checkLanguage: Ember.throttledObserver(function () {
 
