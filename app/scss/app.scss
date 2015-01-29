@@ -14,3 +14,17 @@ textarea {
 .nav-tabs {
   margin-bottom: 15px;
 }
+
+.is-compressing {
+
+  position: absolute;
+  left: 25%;
+  top: 50%;
+  width: 50%;
+  height: 100%;
+  margin-top: -10px;
+
+  .progress-bar {
+    width: 100%;
+  }
+}

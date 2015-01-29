@@ -11,6 +11,12 @@
     </div>
   </div>
 
+  {{#if isStalled}}
+    <div class="alert alert-warning">
+      <strong>Uh oh!</strong> Your request is taking a long time to process, or the API has died. :(
+    </div>
+  {{/if}}
+
   <div class="row">
     <div class="col-lg-12">
       <div class="form-group">
@@ -21,6 +27,13 @@
           placeholder="Paste your JavaScript or CSS code here, or drag in files from your desktop."
           disabled=isCompressing}}
       </div>
+      {{#if isCompressing}}
+        <div class="is-compressing">
+          <div class="progress">
+            <div class="progress-bar progress-bar-striped active"></div>
+          </div>
+        </div>
+      {{/if}}
     </div>
   </div>
 
@@ -70,12 +83,14 @@
     </div>
   </div>
 
-  <div class="row">
-    <div class="col-lg-12">
-      <button type="button" class="btn btn-primary" {{action "createGist"}}>Create Anonymous Gist</button>
-      {{#if gistUrl}}<a {{bind-attr href=gistUrl}}>{{gistUrl}}</a>{{/if}}
+  {{#unless error}}
+    <div class="row">
+      <div class="col-lg-12">
+        <button type="button" class="btn btn-primary" {{action "createGist"}}>Create Anonymous Gist</button>
+        {{#if gistUrl}}<a {{bind-attr href=gistUrl}}>{{gistUrl}}</a>{{/if}}
+      </div>
     </div>
-  </div>
+  {{/unless}}
 
 {{/unless}}
 

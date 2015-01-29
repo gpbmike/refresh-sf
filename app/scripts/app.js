@@ -125,7 +125,13 @@
         return Ember.RSVP.Promise.reject('Compression requires input.');
       }
 
+      var controller = this;
+
       this.set('isCompressing', true);
+
+      var timer = Ember.run.later(function () {
+        controller.set('isStalled', true);
+      }, 5000);
 
       var minifier = this.get('useYui') && language !== 'html' ? 'yui' : language;
 
@@ -136,26 +142,28 @@
 
       return new Ember.RSVP.Promise(function(resolve, reject) {
         Ember.$.ajax({
-          url : this.get('apiUrl') + minifier + '/',
+          url : controller.get('apiUrl') + minifier + '/',
           type: 'post',
           data: {
-            code: this.get('input'),
-            type: this.get('language'),
+            code: controller.get('input'),
+            type: controller.get('language'),
             options: options
           },
           dataType: 'json'
         }).done(function (data) {
           resolve(data.code);
-        }.bind(this)).fail(function (jqXHR) {
+        }).fail(function (jqXHR) {
           if (jqXHR.responseJSON.yuiError) {
             reject(jqXHR.responseJSON.yuiError);
           } else {
             reject(JSON.stringify(jqXHR.responseJSON, null, 2));
           }
-        }.bind(this)).always(function () {
-          this.set('isCompressing', false);
-        }.bind(this));
-      }.bind(this));
+        }).always(function () {
+          controller.set('isCompressing', false);
+          controller.set('isStalled', false);
+          Ember.run.cancel(timer);
+        });
+      });
     },
 
     actions: {
