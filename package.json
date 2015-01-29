@@ -17,7 +17,7 @@
     "clean-css": "^2.1.8",
     "compression": "^1.0.8",
     "errorhandler": "^1.0.2",
-    "express": "^4.4.4",
+    "express": "^4.11.1",
     "highlight.js": "^8.0.0",
     "html-minifier": "^0.6.9",
     "morgan": "^1.0.1",

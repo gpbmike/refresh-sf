@@ -10,11 +10,6 @@ var errorhandler = require('errorhandler');
 var zlib         = require('zlib');
 var api          = express();
 
-api.use(morgan('dev'));
-api.use(compression());
-api.use(bodyParser({ limit: '1mb' }));
-api.use(errorhandler());
-
 /**
  * CORS support.
  */
@@ -35,16 +30,21 @@ api.all('*', function(req, res, next){
   next();
 });
 
+api.use(morgan('dev'));
+api.use(compression());
+api.use(bodyParser({ limit: '1mb' }));
+api.use(errorhandler());
+
 api.post('/javascript/', function (req, res) {
 
-  if (!req.param('code')) {
-    res.send(404, ':(');
+  if (!req.body.code) {
+    return res.status(500).json('No code. :(');
   }
 
   var options = {};
 
-  Object.keys(req.param('options')).forEach(function (key) {
-    var value = req.param('options')[key];
+  Object.keys(req.body.options).forEach(function (key) {
+    var value = req.body.options[key];
     if (value === 'true') {
       value = true;
     }
@@ -58,30 +58,29 @@ api.post('/javascript/', function (req, res) {
   });
 
   try {
-    output = UglifyJS.minify(req.param('code'), {
+    return res.send(UglifyJS.minify(req.body.code, {
       fromString: true,
       warnings: true,
       compress: options
-    });
+    }));
   } catch (error) {
     // users don't need to see filestructure of server
     delete error.stack;
-    res.json(500, error);
+    return res.status(500).json(error);
   }
-  res.send(output);
 
 });
 
 api.post('/css/', function (req, res) {
 
-  if (!req.param('code')) {
-    res.send(404, ':(');
+  if (!req.body.code) {
+    return res.status(500).json('No code. :(');
   }
 
   var options = {};
 
-  Object.keys(req.param('options')).forEach(function (key) {
-    var value = req.param('options')[key];
+  Object.keys(req.body.options).forEach(function (key) {
+    var value = req.body.options[key];
     if (value === 'true') {
       value = true;
     }
@@ -98,24 +97,24 @@ api.post('/css/', function (req, res) {
   });
 
   var output = {
-    code: new CleanCSS(options).minify(req.param('code'))
+    code: new CleanCSS(options).minify(req.body.code)
   };
 
-  res.send(output);
+  return res.send(output);
 
 });
 
 api.post('/html/', function (req, res) {
 
-  if (!req.param('code')) {
-    res.send(404, ':(');
+  if (!req.body.code) {
+    return res.status(500).json('No code. :(');
   }
 
   var options = {};
 
-  Object.keys(req.param('options')).forEach(function (key) {
+  Object.keys(req.body.options).forEach(function (key) {
 
-    var value = req.param('options')[key];
+    var value = req.body.options[key];
 
     if (!value) {
       return;
@@ -146,27 +145,27 @@ api.post('/html/', function (req, res) {
   });
 
   try {
-    output = HTMLMinifier.minify(req.param('code'), options);
-    res.send({ code: output });
+    output = HTMLMinifier.minify(req.body.code, options);
+    return res.send({ code: output });
   } catch (error) {
-    res.json(500, 'HTML Minify does not report any useful errors, but there was an error. :(');
+    return res.status(500).json('HTML Minify does not report any useful errors, but there was an error. :(');
   }
 
 });
 
 api.post('/yui/', function (req, res) {
 
-  if (!req.param('code')) {
-    res.send(404, ':(');
+  if (!req.body.code) {
+    return res.status(500).json('No code. :(');
   }
 
   var options = {
-    type: req.param('type') === 'javascript' ? 'js' : 'css'
+    type: req.body.type === 'javascript' ? 'js' : 'css'
   };
 
-  Object.keys(req.param('options')).forEach(function (key) {
+  Object.keys(req.body.options).forEach(function (key) {
 
-    var value = req.param('options')[key];
+    var value = req.body.options[key];
 
     if (!value) {
       return;
@@ -190,27 +189,27 @@ api.post('/yui/', function (req, res) {
 
   });
 
-  YUI.compress(req.param('code'), options, function(err, data, extra) {
+  YUI.compress(req.body.code, options, function(err, data, extra) {
     //err   If compressor encounters an error, it's stderr will be here
     //data  The compressed string, you write it out where you want it
     //extra The stderr (warnings are printed here in case you want to echo them
     if (err) {
-      res.send(500, { yuiError: err });
+      return res.send(500, { yuiError: err });
     } else {
-      res.send({ code: data });
+      return res.send({ code: data });
     }
   });
 
 });
 
 api.post('/gz/:fileName', function (req, res) {
-  zlib.gzip(req.param('code'), function (_, result) {
-    res.end(result);
+  zlib.gzip(req.body.code, function (_, result) {
+    return res.end(result);
   });
 });
 
 api.all('*', function (req, res) {
-  res.send(404);
+  return res.send(404);
 });
 
 port = Number(process.env.PORT || 3000);

@@ -183,11 +183,16 @@
             type: controller.get('language'),
             options: options
           },
-          dataType: 'json'
+          dataType: 'json',
+          crossDomain: true
         }).done(function (data) {
           resolve(data.code);
-        }).fail(function (jqXHR) {
-          if (jqXHR.responseJSON.yuiError) {
+        }).fail(function (jqXHR, textStatus, error) {
+          if (jqXHR.status === 413) {
+            reject('There is a 1MB input limit to reduce strain on my free Heroku instance.');
+          } else if (!jqXHR.responseJSON) {
+            reject('Unhandled error. :( ' + error);
+          } else if (jqXHR.responseJSON.yuiError) {
             reject(jqXHR.responseJSON.yuiError);
           } else {
             reject(JSON.stringify(jqXHR.responseJSON, null, 2));
