@@ -95,6 +95,10 @@
       return this.get('output.length') - this.get('input.length');
     }.property('input.length', 'output.length'),
 
+    deltaPercentage: function () {
+      return (this.get('delta') / this.get('input.length') * 100).toFixed(2) + '%';
+    }.property('input.length', 'delta'),
+
     isGoodDelta: function () {
       return this.get('delta') < 0;
     }.property('delta'),

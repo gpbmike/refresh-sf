@@ -88,7 +88,7 @@
       <div class="col-md-6 col-md-push-6 text-right">
         Input: {{filesize input.length}}<br>
         Output: {{filesize output.length}}<br>
-        <strong {{bind-attr class="isGoodDelta:text-success:text-danger"}}>Delta: {{filesize delta}}</strong>
+        <strong {{bind-attr class="isGoodDelta:text-success:text-danger"}}>Delta: {{filesize delta}} ({{deltaPercentage}})</strong>
       </div>
       <div class="col-md-6 col-md-pull-6">
         <button type="button" class="btn btn-primary" {{action "createGist"}}>Create Anonymous Gist</button>
