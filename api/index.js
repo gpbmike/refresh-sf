@@ -12,9 +12,11 @@ var api          = express();
 
 if (process.env.NODE_ENV === 'development') {
   api.use(errorhandler());
+  api.use(morgan('dev'));
+} else {
+  api.use(morgan('combined'));
 }
 
-api.use(morgan('dev'));
 api.use(compression());
 
 /**
@@ -45,7 +47,8 @@ api.use(bodyParser.urlencoded({
 api.post('/javascript/', function (req, res) {
 
   if (!req.body.code) {
-    return res.status(500).json('No code. :(');
+    res.status(500).json('No code. :(').end();
+    return;
   }
 
   var options = {};
@@ -65,15 +68,14 @@ api.post('/javascript/', function (req, res) {
   });
 
   try {
-    return res.send(UglifyJS.minify(req.body.code, {
+    res.json(UglifyJS.minify(req.body.code, {
       fromString: true,
-      warnings: true,
       compress: options
     }));
   } catch (error) {
     // users don't need to see filestructure of server
     delete error.stack;
-    return res.status(500).json(error);
+    res.status(500).json(error);
   }
 
 });
@@ -81,7 +83,8 @@ api.post('/javascript/', function (req, res) {
 api.post('/css/', function (req, res) {
 
   if (!req.body.code) {
-    return res.status(500).json('No code. :(');
+    res.status(500).json('No code. :(').end();
+    return;
   }
 
   var options = {};
@@ -103,18 +106,17 @@ api.post('/css/', function (req, res) {
     options[key] = value;
   });
 
-  var output = {
+  res.json({
     code: new CleanCSS(options).minify(req.body.code)
-  };
-
-  return res.send(output);
+  });
 
 });
 
 api.post('/html/', function (req, res) {
 
   if (!req.body.code) {
-    return res.status(500).json('No code. :(');
+    res.status(500).json('No code. :(').end();
+    return;
   }
 
   var options = {};
@@ -153,9 +155,9 @@ api.post('/html/', function (req, res) {
 
   try {
     output = HTMLMinifier.minify(req.body.code, options);
-    return res.send({ code: output });
+    res.json({ code: output });
   } catch (error) {
-    return res.status(500).json('HTML Minify does not report any useful errors, but there was an error. :(');
+    res.status(500).json('HTML Minify does not report any useful errors, but there was an error. :(');
   }
 
 });
@@ -163,7 +165,8 @@ api.post('/html/', function (req, res) {
 api.post('/yui/', function (req, res) {
 
   if (!req.body.code) {
-    return res.status(500).json('No code. :(');
+    res.status(500).json('No code. :(').end();
+    return;
   }
 
   var options = {
@@ -201,9 +204,9 @@ api.post('/yui/', function (req, res) {
     //data  The compressed string, you write it out where you want it
     //extra The stderr (warnings are printed here in case you want to echo them
     if (err) {
-      return res.send(500, { yuiError: err });
+      res.status(500).json({ yuiError: err });
     } else {
-      return res.send({ code: data });
+      res.json({ code: data });
     }
   });
 
@@ -211,12 +214,12 @@ api.post('/yui/', function (req, res) {
 
 api.post('/gz/:fileName', function (req, res) {
   zlib.gzip(req.body.code, function (_, result) {
-    return res.end(result);
+    res.end(result);
   });
 });
 
 api.all('*', function (req, res) {
-  return res.send(404);
+  res.status(404).end();
 });
 
 port = Number(process.env.PORT || 3000);
