@@ -2,9 +2,9 @@
 
   'use strict';
 
-  Ember.throttledObserver = function(func, key, time) {
+  Ember.debouncedObserver = function(func, key, time) {
     return Em.observer(function() {
-        Em.run.throttle(this, func, time);
+        Em.run.debounce(this, func, time);
     }, key);
   };
 
@@ -45,10 +45,10 @@
     useYui: localStorage.getItem('useYui'),
 
     compressOptions: Ember.Object.create({
-      javascript: window.uglifyOptions,
-      css: window.cleancssOptions,
-      html: window.htmlminifierOptions,
-      yui: window.yuiOptions
+      javascript : window.uglifyOptions,
+      css        : window.cleancssOptions,
+      html       : window.htmlminifierOptions,
+      yui        : window.yuiOptions
     }),
 
     htmlDisabled: function () {
@@ -103,7 +103,7 @@
       return this.get('delta') < 0;
     }.property('delta'),
 
-    checkLanguage: Ember.throttledObserver(function () {
+    checkLanguage: Ember.debouncedObserver(function () {
 
       this.set('unknownLanguage', null);
       this.set('language', null);
