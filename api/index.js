@@ -10,6 +10,13 @@ var errorhandler = require('errorhandler');
 var zlib         = require('zlib');
 var api          = express();
 
+if (process.env.NODE_ENV === 'development') {
+  api.use(errorhandler());
+}
+
+api.use(morgan('dev'));
+api.use(compression());
+
 /**
  * CORS support.
  */
@@ -30,10 +37,10 @@ api.all('*', function(req, res, next){
   next();
 });
 
-api.use(morgan('dev'));
-api.use(compression());
-api.use(bodyParser({ limit: '1mb' }));
-api.use(errorhandler());
+api.use(bodyParser.urlencoded({
+  extended: true,
+  limit: '1mb'
+}));
 
 api.post('/javascript/', function (req, res) {
 
