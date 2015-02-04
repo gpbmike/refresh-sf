@@ -214,7 +214,7 @@ api.post('/yui/', function (req, res) {
 
 api.post('/gz/:fileName', function (req, res) {
   zlib.gzip(req.body.code, function (_, result) {
-    res.end(result);
+    res.send(result);
   });
 });
 

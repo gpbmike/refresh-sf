@@ -67,10 +67,6 @@
       return this.get('language') === 'html';
     }.property('language'),
 
-    gzipUrl: function () {
-      return this.get('apiUrl') + 'gz/' + this.get('filename');
-    }.property('apiUrl', 'filename'),
-
     saveDisabled: function () {
       return !this.get('filename');
     }.property('filename'),
@@ -91,9 +87,13 @@
       return this.get('language') === 'html';
     }.property('language'),
 
+    gzipSize: function () {
+      return this.get('gzipBlob') ? this.get('gzipBlob').size : null;
+    }.property('gzipBlob'),
+
     delta: function () {
-      return this.get('output.length') - this.get('input.length');
-    }.property('input.length', 'output.length'),
+      return this.get('gzipSize') - this.get('input.length');
+    }.property('input.length', 'gzipSize'),
 
     deltaPercentage: function () {
       return (this.get('delta') / this.get('input.length') * 100).toFixed(2) + '%';
@@ -207,35 +207,59 @@
 
     actions: {
       compress: function (language) {
+
+        var controller = this;
+
         language = language || this.get('language');
 
         this.set('output', null);
+        this.set('gzipBlob', null);
         this.set('error', null);
 
         this.compress(language).then(function (code) {
 
-          this.set('output', code);
+          controller.set('output', code);
 
-          if (this.get('filename')) {
+          if (controller.get('filename')) {
             return;
           }
 
           switch (language) {
           case 'css':
-            this.set('filename', 'style.min.css');
+            controller.set('filename', 'style.min.css');
             break;
           case 'javascript':
-            this.set('filename', 'app.min.js');
+            controller.set('filename', 'app.min.js');
             break;
           case 'html':
-            this.set('filename', 'index.min.html');
+            controller.set('filename', 'index.min.html');
             break;
           }
 
-        }.bind(this), function (error) {
-          this.set('error', true);
-          this.set('output', error);
-        }.bind(this));
+        }, function (error) {
+
+          controller.set('error', true);
+          controller.set('output', error);
+
+        }).then(function () {
+
+          var req = new XMLHttpRequest();
+          req.responseType = 'blob';
+
+          req.onreadystatechange = function () {
+            if (this.readyState === this.DONE) {
+              if (this.status === 200) {
+
+                controller.set('gzipBlob', this.response);
+              }
+            }
+          }
+
+          req.open('POST', window.ENV.apiUrl + 'gz/auto.js');
+          req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+          req.send("code=%@".fmt(escape(controller.get('output'))));
+
+        });
       },
 
       save: function () {
@@ -244,7 +268,7 @@
       },
 
       saveGzip: function () {
-        Ember.$('form').trigger('submit');
+        saveAs(this.get('gzipBlob'), this.get('filename') + '.gz');
       },
 
       resetCompressor: function () {
