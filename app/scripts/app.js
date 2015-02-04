@@ -263,11 +263,13 @@
       },
 
       save: function () {
+        ga('send', 'event', 'compressor', 'save', 'output');
         var blob = new Blob([this.get('output')], {type: 'text/' + this.get('language') + ';charset=utf-8'});
         saveAs(blob, this.get('filename'));
       },
 
       saveGzip: function () {
+        ga('send', 'event', 'compressor', 'save', 'compressed');
         saveAs(this.get('gzipBlob'), this.get('filename') + '.gz');
       },
 
