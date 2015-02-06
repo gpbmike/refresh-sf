@@ -30,6 +30,12 @@ module.exports = {
         dest: './dist/yui/'
       },
       {
+        expand: true,
+        cwd: './bower_components/bootstrap/dist/fonts/',
+        src: ['**/*'],
+        dest: './dist/fonts/'
+      },
+      {
         src: './app/CNAME',
         dest: './dist/CNAME'
       }

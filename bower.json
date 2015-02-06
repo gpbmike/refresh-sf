@@ -16,6 +16,8 @@
   "dependencies": {
     "filereader.js": "bgrins/filereader.js",
     "FileSaver.js": "eligrey/FileSaver.js",
-    "ember": "~1.8.1"
+    "ember": "~1.8.1",
+    "bootstrap": "~3.3.2",
+    "jquery": "~2.1.3"
   }
 }
