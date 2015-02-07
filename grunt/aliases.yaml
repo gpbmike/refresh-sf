@@ -28,8 +28,6 @@ build:
   - 'cssmin'
   - 'usemin'
   - 'htmlmin'
-  - 'compress'
-  - 'copy:compress'
 
 deploy:
   - 'build'

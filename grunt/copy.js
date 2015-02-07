@@ -40,19 +40,5 @@ module.exports = {
         dest: './dist/CNAME'
       }
     ]
-  },
-  compress: {
-    files: [
-      {
-        expand: true,
-        cwd: './dist/fonts/',
-        src: ['*.woff', '*.woff2'],
-        dest: './compressed/fonts/'
-      },
-      {
-        src: './dist/CNAME',
-        dest: './compressed/CNAME'
-      }
-    ]
   }
 };
