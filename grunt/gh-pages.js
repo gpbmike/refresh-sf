@@ -1,6 +1,6 @@
 module.exports = {
   options: {
-    base: 'dist'
+    base: 'compressed'
   },
   src: '**/*'
 };

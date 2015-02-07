@@ -27,6 +27,7 @@
     "ember-template-compiler": "^1.6.1",
     "grunt": "~0.4.4",
     "grunt-contrib-clean": "~0.5.0",
+    "grunt-contrib-compress": "^0.13.0",
     "grunt-contrib-concat": "~0.3.0",
     "grunt-contrib-connect": "~0.7.1",
     "grunt-contrib-copy": "~0.5.0",

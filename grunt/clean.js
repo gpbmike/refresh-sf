@@ -1,4 +1,4 @@
 module.exports = {
   dev: ['./dev'],
-  dist: ['./dist']
+  dist: ['./dist', './compressed']
 };

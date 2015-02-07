@@ -1,6 +1,7 @@
 bower_components/
 node_modules/
 dist/
+compressed/
 dev/
 .tmp/
 tmp/
