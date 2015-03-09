@@ -244,6 +244,8 @@
         }).then(function () {
 
           var req = new XMLHttpRequest();
+          req.open('POST', window.ENV.apiUrl + 'gz/auto.js');
+          req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
           req.responseType = 'blob';
 
           req.onreadystatechange = function () {
@@ -255,8 +257,6 @@
             }
           }
 
-          req.open('POST', window.ENV.apiUrl + 'gz/auto.js');
-          req.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
           req.send("code=%@".fmt(escape(controller.get('output'))));
 
         });
