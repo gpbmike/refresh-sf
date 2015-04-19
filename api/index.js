@@ -107,7 +107,7 @@ api.post('/css/', function (req, res) {
   });
 
   res.json({
-    code: new CleanCSS(options).minify(req.body.code)
+    code: new CleanCSS(options).minify(req.body.code).styles
   });
 
 });
