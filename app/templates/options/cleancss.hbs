@@ -18,11 +18,10 @@
     <code>benchmark</code> - turns on benchmarking mode measuring time spent on cleaning up (run npm run bench to see example)
   </label>
 </div>
-<div class="checkbox">
-  <label>
-    {{input type="checkbox" checked=compressOptions.css.options.compatibility}}
-    <code>compatibility</code> - enables compatibility mode, see below for more examples
-  </label>
+<div class="form-group">
+  <label><code>compatibility</code></label>
+  {{input class="form-control" value=compressOptions.css.options.compatibility}}
+  <p class="help-block">Enables compatibility mode. Possible values are <code>ie7</code> or <code>ie8</code>. The default <code>''</code> is Internet Explorer 9+ compatibility mode. See <a href="https://github.com/jakubpawlowicz/clean-css#how-to-set-compatibility-mode">Clean-CSS</a> for more fine grained control.</p>
 </div>
 <div class="checkbox">
   <label>
