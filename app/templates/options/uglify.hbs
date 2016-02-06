@@ -131,3 +131,9 @@
   {{input class="form-control" placeholder="comma separated list" value=compressOptions.javascript.options.pure_funcs_cs}}
   <p class="help-block">default null. You can pass an array of names and UglifyJS will assume that those functions do not produce side effects. <span class="text-danger">DANGER: will not check if the name is redefined in scope.</span> An example case here, for instance var q = Math.floor(a/b). If variable q is not used elsewhere, UglifyJS will drop it, but will still keep the Math.floor(a/b), not knowing what it does. You can pass pure_funcs: [ 'Math.floor' ] to let it know that this function won't produce any side effect, in which case the whole statement would get discarded. The current implementation adds some overhead (compression will be slower).</p>
 </div>
+<div class="checkbox">
+  <label>
+    {{input type="checkbox" checked=compressOptions.javascript.options.toplevel}}
+    <code>toplevel</code> &mdash; mangle names declared in the toplevel scope
+  </label>
+</div>

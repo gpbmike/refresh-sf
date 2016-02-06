@@ -27,7 +27,8 @@ var defaults = Ember.Object.create();
   'hoist_vars',
   'pure_getters',
   'drop_console',
-  'keep_fargs'
+  'keep_fargs',
+  'toplevel'
 ].forEach(function (option) {
   defaults.set(option, false);
 });

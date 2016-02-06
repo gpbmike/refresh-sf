@@ -51,7 +51,10 @@ api.post('/javascript/', function (req, res) {
     return;
   }
 
-  var options = {};
+  var mangleKeys = ['toplevel'];
+
+  var compressOptions = {};
+  var mangleOptions = {};
 
   Object.keys(req.body.options).forEach(function (key) {
     var value = req.body.options[key];
@@ -64,13 +67,18 @@ api.post('/javascript/', function (req, res) {
     if (value === '') {
       value = null;
     }
-    options[key] = value;
+    if (~mangleKeys.indexOf(key)) {
+      mangleOptions[key] = value;
+    } else {
+      compressOptions[key] = value;
+    }
   });
 
   try {
     res.json(UglifyJS.minify(req.body.code, {
       fromString: true,
-      compress: options
+      compress: compressOptions,
+      mangle: mangleOptions,
     }));
   } catch (error) {
     // users don't need to see filestructure of server
