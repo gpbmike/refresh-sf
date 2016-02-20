@@ -257,7 +257,7 @@
             }
           }
 
-          req.send("code=%@".fmt(escape(controller.get('output'))));
+          req.send("code=%@".fmt(encodeURIComponent(controller.get('output'))));
 
         });
       },
