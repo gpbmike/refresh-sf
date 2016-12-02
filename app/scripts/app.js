@@ -135,7 +135,7 @@
 
       switch (this.get('language')) {
       case 'javascript':
-        return 'Javascript';
+        return 'JavaScript';
       case 'css':
         return 'CSS';
       case 'html':
